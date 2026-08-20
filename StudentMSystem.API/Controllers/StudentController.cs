@@ -10,11 +10,13 @@ namespace StudentMSystem.Presentation.Controllers
     {
         private readonly RegisterStudentHandler _registerStudentHandler;
         private readonly LoginStudentHandler _loginStudentHandler;
+        private readonly GetAllStudentsHandler _getAllStudentsHandler;
 
-        public StudentController(RegisterStudentHandler registerStudentHandler, LoginStudentHandler loginStudentHandler)
+        public StudentController(RegisterStudentHandler registerStudentHandler, LoginStudentHandler loginStudentHandler, GetAllStudentsHandler getAllStudentsHandler)
         {
             _registerStudentHandler = registerStudentHandler;
             _loginStudentHandler = loginStudentHandler;
+            _getAllStudentsHandler = getAllStudentsHandler;
         }
 
         [HttpPost("register")]
@@ -59,6 +61,23 @@ namespace StudentMSystem.Presentation.Controllers
                 return StatusCode(500, new
                 {
                     message = "An unexpected error occurred."
+                });
+            }
+        }
+        [HttpGet]
+        public async Task<IActionResult> GetAllStudents()
+        {
+            try
+            {
+                var response =  await _getAllStudentsHandler.GetAllAsync();
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new
+                {
+                    message = "An unexpected error occurred.",
+                    error = ex.Message
                 });
             }
         }

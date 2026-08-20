@@ -12,7 +12,7 @@ namespace StudentMSystem.Repository.StudentRepository
 
         Task<Student?> GetByEmailAsync(string email);
 
-        Task<Student?> UpdateAsync(int id, Student student);
+        Task<Student?>   UpdateAsync(int id, Student student);
 
         Task<bool> DeleteAsync(int id);
     }

@@ -17,8 +17,8 @@ builder.Services.AddDbContext<AppDbContext>(options =>
         builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddScoped<IStudentRepository, StudentRepository>();
 builder.Services.AddScoped<RegisterStudentHandler>();
-builder.Services.AddScoped<RegisterStudentHandler>();
 builder.Services.AddScoped<LoginStudentHandler>();
+builder.Services.AddScoped<GetAllStudentsHandler>();
 
 var app = builder.Build();
 
