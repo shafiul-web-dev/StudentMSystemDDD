@@ -39,7 +39,6 @@ namespace StudentMSystem.Repository.StudentRepository
         public async Task<Student?> UpdateAsync(int id,Student student)
         {
             var existingStudent =  await _context.Students.FindAsync(id);
-
             if (existingStudent == null)
             {
                 return null;
@@ -50,7 +49,6 @@ namespace StudentMSystem.Repository.StudentRepository
             existingStudent.Department = student.Department;
 
             await _context.SaveChangesAsync();
-
             return existingStudent;
         }
 

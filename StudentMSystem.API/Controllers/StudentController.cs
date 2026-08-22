@@ -12,14 +12,17 @@ namespace StudentMSystem.Presentation.Controllers
         private readonly LoginStudentHandler _loginStudentHandler;
         private readonly GetAllStudentsHandler _getAllStudentsHandler;
         private readonly GetStudentByIdHandler _getStudentByIdHandler;
+        private readonly UpdateStudentHandler _updateStudentHandler;
 
         public StudentController(RegisterStudentHandler registerStudentHandler, 
-            LoginStudentHandler loginStudentHandler, GetAllStudentsHandler getAllStudentsHandler, GetStudentByIdHandler getStudentByIdHandler)
+            LoginStudentHandler loginStudentHandler, GetAllStudentsHandler getAllStudentsHandler,
+            GetStudentByIdHandler getStudentByIdHandler, UpdateStudentHandler updateStudentHandler)
         {
             _registerStudentHandler = registerStudentHandler;
             _loginStudentHandler = loginStudentHandler;
             _getAllStudentsHandler = getAllStudentsHandler;
             _getStudentByIdHandler = getStudentByIdHandler;
+            _updateStudentHandler = updateStudentHandler;
         }
 
         [HttpPost("register")]
@@ -103,6 +106,26 @@ namespace StudentMSystem.Presentation.Controllers
                     message = ex.Message
                 });
             }    
+        }
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateStudent(int id, UpdateStudentDto request)
+        {
+            try
+            {
+                var response =await _updateStudentHandler .UpdateStudentAsync(id, request);
+                if (response == null)
+                {
+                    return NotFound();
+                }
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new
+                {
+                    message = ex.Message
+                });
+            }
         }
     }
 }

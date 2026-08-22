@@ -20,6 +20,7 @@ builder.Services.AddScoped<RegisterStudentHandler>();
 builder.Services.AddScoped<LoginStudentHandler>();
 builder.Services.AddScoped<GetAllStudentsHandler>();
 builder.Services.AddScoped<GetStudentByIdHandler>();
+builder.Services.AddScoped<UpdateStudentHandler>();
 
 var app = builder.Build();
 
