@@ -19,6 +19,7 @@ builder.Services.AddScoped<IStudentRepository, StudentRepository>();
 builder.Services.AddScoped<RegisterStudentHandler>();
 builder.Services.AddScoped<LoginStudentHandler>();
 builder.Services.AddScoped<GetAllStudentsHandler>();
+builder.Services.AddScoped<GetStudentByIdHandler>();
 
 var app = builder.Build();
 

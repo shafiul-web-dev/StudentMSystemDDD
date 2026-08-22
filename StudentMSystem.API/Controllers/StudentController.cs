@@ -11,12 +11,15 @@ namespace StudentMSystem.Presentation.Controllers
         private readonly RegisterStudentHandler _registerStudentHandler;
         private readonly LoginStudentHandler _loginStudentHandler;
         private readonly GetAllStudentsHandler _getAllStudentsHandler;
+        private readonly GetStudentByIdHandler _getStudentByIdHandler;
 
-        public StudentController(RegisterStudentHandler registerStudentHandler, LoginStudentHandler loginStudentHandler, GetAllStudentsHandler getAllStudentsHandler)
+        public StudentController(RegisterStudentHandler registerStudentHandler, 
+            LoginStudentHandler loginStudentHandler, GetAllStudentsHandler getAllStudentsHandler, GetStudentByIdHandler getStudentByIdHandler)
         {
             _registerStudentHandler = registerStudentHandler;
             _loginStudentHandler = loginStudentHandler;
             _getAllStudentsHandler = getAllStudentsHandler;
+            _getStudentByIdHandler = getStudentByIdHandler;
         }
 
         [HttpPost("register")]
@@ -80,6 +83,26 @@ namespace StudentMSystem.Presentation.Controllers
                     error = ex.Message
                 });
             }
+        }
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(int id)
+        {
+            try
+            {
+                var response = await _getStudentByIdHandler.GetByIdAsync(id);
+                if (response == null)
+                {
+                    return NotFound();
+                }
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new
+                {
+                    message = ex.Message
+                });
+            }    
         }
     }
 }
