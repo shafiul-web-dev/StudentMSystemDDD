@@ -54,8 +54,7 @@ namespace StudentMSystem.Repository.StudentRepository
 
         public async Task<bool> DeleteAsync(int id)
         {
-            var student =
-                await _context.Students.FindAsync(id);
+            var student = await _context.Students.FindAsync(id);
 
             if (student == null)
             {

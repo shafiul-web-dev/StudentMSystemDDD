@@ -2,7 +2,7 @@
 using StudentMSystem.DTO.Student;
 using StudentMSystem.Handler;
 
-namespace StudentMSystem.Presentation.Controllers
+namespace StudentMSystem.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -13,119 +13,94 @@ namespace StudentMSystem.Presentation.Controllers
         private readonly GetAllStudentsHandler _getAllStudentsHandler;
         private readonly GetStudentByIdHandler _getStudentByIdHandler;
         private readonly UpdateStudentHandler _updateStudentHandler;
+        private readonly DeleteStudentHandler _deleteStudentHandler;
 
-        public StudentController(RegisterStudentHandler registerStudentHandler, 
-            LoginStudentHandler loginStudentHandler, GetAllStudentsHandler getAllStudentsHandler,
-            GetStudentByIdHandler getStudentByIdHandler, UpdateStudentHandler updateStudentHandler)
+        public StudentController(
+            RegisterStudentHandler registerStudentHandler,
+            LoginStudentHandler loginStudentHandler,
+            GetAllStudentsHandler getAllStudentsHandler,
+            GetStudentByIdHandler getStudentByIdHandler,
+            UpdateStudentHandler updateStudentHandler,
+            DeleteStudentHandler deleteStudentHandler)
         {
             _registerStudentHandler = registerStudentHandler;
             _loginStudentHandler = loginStudentHandler;
             _getAllStudentsHandler = getAllStudentsHandler;
             _getStudentByIdHandler = getStudentByIdHandler;
             _updateStudentHandler = updateStudentHandler;
+            _deleteStudentHandler = deleteStudentHandler;
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> Register(
-            RegistrationStudentDto request)
+        public async Task<IActionResult> Register( RegistrationStudentDto request)
         {
-            try
-            {
-                var response = await _registerStudentHandler.RegisterAsync(request);
-                return Ok(response);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new
-                {
-                    message = ex.Message
-                });
-            }
+            var response = await _registerStudentHandler.RegisterAsync(request);
+            return Ok(response);
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login(LoginStudentDto request)
+        public async Task<IActionResult> Login( LoginStudentDto request)
         {
-            try
+            var response = await _loginStudentHandler.LoginAsync(request);
+            if (!response)
             {
-                var isLoginSuccessful = await _loginStudentHandler.LoginAsync(request);
-
-                if (!isLoginSuccessful)
+                return Unauthorized(new
                 {
-                    return Unauthorized(new
-                    {
-                        message = "Invalid email or password."
-                    });
-                }
-                return Ok(new
-                {
-                    message = "Login successful."
+                    message = "Invalid email or password."
                 });
             }
-            catch (Exception)
+            return Ok(new
             {
-                return StatusCode(500, new
-                {
-                    message = "An unexpected error occurred."
-                });
-            }
+                message = "Login successful."
+            });
         }
+
         [HttpGet]
         public async Task<IActionResult> GetAllStudents()
         {
-            try
-            {
-                var response =  await _getAllStudentsHandler.GetAllAsync();
-                return Ok(response);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, new
-                {
-                    message = "An unexpected error occurred.",
-                    error = ex.Message
-                });
-            }
+            var response = await _getAllStudentsHandler.GetAllAsync();
+            return Ok(response);
         }
+
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
-            try
+            var response =  await _getStudentByIdHandler.GetByIdAsync(id);
+            if (response == null)
             {
-                var response = await _getStudentByIdHandler.GetByIdAsync(id);
-                if (response == null)
+                return NotFound(new
                 {
-                    return NotFound();
-                }
-                return Ok(response);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, new
-                {
-                    message = ex.Message
+                    message = "Student not found."
                 });
-            }    
+            }
+            return Ok(response);
         }
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateStudent(int id, UpdateStudentDto request)
+        public async Task<IActionResult> UpdateStudent( int id, UpdateStudentDto request)
         {
-            try
+            var response = await _updateStudentHandler.UpdateStudentAsync(id, request);
+
+            if (response == null)
             {
-                var response =await _updateStudentHandler .UpdateStudentAsync(id, request);
-                if (response == null)
+                return NotFound(new
                 {
-                    return NotFound();
-                }
-                return Ok(response);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, new
-                {
-                    message = ex.Message
+                    message = "Student not found."
                 });
             }
+            return Ok(response);
+        }
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteStudent(int id)
+        {
+            var deleted = await _deleteStudentHandler.DeleteAsync(id);
+            if (!deleted)
+            {
+                return NotFound(new
+                {
+                    message = "Student not found."
+                });
+            }
+            return NoContent();
         }
     }
 }

@@ -1,7 +1,8 @@
 using Microsoft.EntityFrameworkCore;
+using StudentMSystem.API.Middleware;
+using StudentMSystem.Handler;
 using StudentMSystem.Repository.Data;
 using StudentMSystem.Repository.StudentRepository;
-using StudentMSystem.Handler;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,8 +22,10 @@ builder.Services.AddScoped<LoginStudentHandler>();
 builder.Services.AddScoped<GetAllStudentsHandler>();
 builder.Services.AddScoped<GetStudentByIdHandler>();
 builder.Services.AddScoped<UpdateStudentHandler>();
+builder.Services.AddScoped<DeleteStudentHandler>();
 
 var app = builder.Build();
+app.UseMiddleware<GlobalExceptionMiddleware>();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
