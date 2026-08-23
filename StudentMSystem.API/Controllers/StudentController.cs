@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using StudentMSystem.DTO.Student;
 using StudentMSystem.Handler;
+using StudentMSystem.Handler.Commands.RegistrationStudent;
+using StudentMSystem.Handler.Queries.LoginStudent;
 
 namespace StudentMSystem.API.Controllers
 {
@@ -8,23 +10,23 @@ namespace StudentMSystem.API.Controllers
     [ApiController]
     public class StudentController : ControllerBase
     {
-        private readonly RegisterStudentHandler _registerStudentHandler;
-        private readonly LoginStudentHandler _loginStudentHandler;
+        private readonly RegistrationStudentCommandHandler _registrationStudentCommandHandler;
+        private readonly LoginStudentQueryHandler _loginStudentQueryHandler;
         private readonly GetAllStudentsHandler _getAllStudentsHandler;
         private readonly GetStudentByIdHandler _getStudentByIdHandler;
         private readonly UpdateStudentHandler _updateStudentHandler;
         private readonly DeleteStudentHandler _deleteStudentHandler;
 
         public StudentController(
-            RegisterStudentHandler registerStudentHandler,
-            LoginStudentHandler loginStudentHandler,
+            RegistrationStudentCommandHandler registrationStudentCommandHandler,
+            LoginStudentQueryHandler loginStudentQueryHandler,
             GetAllStudentsHandler getAllStudentsHandler,
             GetStudentByIdHandler getStudentByIdHandler,
             UpdateStudentHandler updateStudentHandler,
             DeleteStudentHandler deleteStudentHandler)
         {
-            _registerStudentHandler = registerStudentHandler;
-            _loginStudentHandler = loginStudentHandler;
+            _registrationStudentCommandHandler = registrationStudentCommandHandler;
+            _loginStudentQueryHandler = loginStudentQueryHandler; ;
             _getAllStudentsHandler = getAllStudentsHandler;
             _getStudentByIdHandler = getStudentByIdHandler;
             _updateStudentHandler = updateStudentHandler;
@@ -32,16 +34,19 @@ namespace StudentMSystem.API.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> Register( RegistrationStudentDto request)
+        public async Task<IActionResult> Register(
+            RegistrationStudentCommand command)
         {
-            var response = await _registerStudentHandler.RegisterAsync(request);
-            return Ok(response);
+            await _registrationStudentCommandHandler.HandleAsync(command);
+
+            return Ok("Student registered successfully.");
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login( LoginStudentDto request)
+        public async Task<IActionResult> Login(LoginStudentQuery query)
         {
-            var response = await _loginStudentHandler.LoginAsync(request);
+            var response = await _loginStudentQueryHandler.HandleAsync(query);
+
             if (!response)
             {
                 return Unauthorized(new
@@ -49,6 +54,7 @@ namespace StudentMSystem.API.Controllers
                     message = "Invalid email or password."
                 });
             }
+
             return Ok(new
             {
                 message = "Login successful."

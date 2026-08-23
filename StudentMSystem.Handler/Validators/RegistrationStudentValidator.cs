@@ -1,9 +1,9 @@
 ﻿using FluentValidation;
-using StudentMSystem.DTO.Student;
+using StudentMSystem.Handler.Commands.RegistrationStudent;
 
 namespace StudentMSystem.Handler.Validators
 {
-    public class RegistrationStudentValidator: AbstractValidator<RegistrationStudentDto>
+    public class RegistrationStudentValidator: AbstractValidator<RegistrationStudentCommand>
     {
         public RegistrationStudentValidator()
         {

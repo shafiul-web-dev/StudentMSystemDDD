@@ -1,6 +1,13 @@
-﻿namespace StudentMSystem.DTO.Student
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using StudentMSystem.DTO.Command.Abstractions;
+
+namespace StudentMSystem.Handler.Commands.RegistrationStudent
 {
-    public class RegistrationStudentDto
+    public class RegistrationStudentCommand : ICommand
     {
         public string Name { get; set; } = string.Empty;
 
@@ -11,5 +18,6 @@
         public string Phone { get; set; } = string.Empty;
 
         public string Department { get; set; } = string.Empty;
+
     }
 }

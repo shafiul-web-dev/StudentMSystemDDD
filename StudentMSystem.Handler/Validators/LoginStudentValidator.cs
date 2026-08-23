@@ -1,9 +1,9 @@
 ﻿using FluentValidation;
-using StudentMSystem.DTO.Student;
+using StudentMSystem.Handler.Queries.LoginStudent;
 
 namespace StudentMSystem.Handler.Validators
 {
-    public class LoginStudentValidator : AbstractValidator<LoginStudentDto>
+    public class LoginStudentValidator : AbstractValidator<LoginStudentQuery>
     {
         public LoginStudentValidator() 
         {
