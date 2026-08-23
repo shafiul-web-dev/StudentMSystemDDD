@@ -1,5 +1,6 @@
 ﻿using StudentMSystem.AggregateRoot;
 using StudentMSystem.DTO.Student;
+using StudentMSystem.Handler.Services;
 using StudentMSystem.Repository.StudentRepository;
 
 namespace StudentMSystem.Handler
@@ -7,16 +8,21 @@ namespace StudentMSystem.Handler
     public class RegisterStudentHandler
     {
         private readonly IStudentRepository _studentRepository;
+        private readonly ValidationService<RegistrationStudentDto> _validationService;
 
-        public RegisterStudentHandler( IStudentRepository studentRepository)
+
+        public RegisterStudentHandler( IStudentRepository studentRepository,ValidationService<RegistrationStudentDto> validationService)
         {
             _studentRepository = studentRepository;
+            _validationService = validationService;
+
         }
 
         public async Task<StudentResponseDto> RegisterAsync( RegistrationStudentDto request) 
         {
-            var existingStudent = await _studentRepository.GetByEmailAsync(request.Email); 
+            await _validationService.ValidateAsync(request);
 
+            var existingStudent = await _studentRepository.GetByEmailAsync(request.Email); 
             if (existingStudent != null)
             {
                 throw new Exception("Email already exists.");

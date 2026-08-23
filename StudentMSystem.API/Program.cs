@@ -1,6 +1,9 @@
+using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using StudentMSystem.API.Middleware;
 using StudentMSystem.Handler;
+using StudentMSystem.Handler.Services;
+using StudentMSystem.Handler.Validators;
 using StudentMSystem.Repository.Data;
 using StudentMSystem.Repository.StudentRepository;
 
@@ -10,12 +13,13 @@ var builder = WebApplication.CreateBuilder(args);
 
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddValidatorsFromAssemblyContaining<RegistrationStudentValidator>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(
         builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddScoped(typeof(ValidationService<>));
 builder.Services.AddScoped<IStudentRepository, StudentRepository>();
 builder.Services.AddScoped<RegisterStudentHandler>();
 builder.Services.AddScoped<LoginStudentHandler>();

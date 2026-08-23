@@ -1,28 +1,30 @@
 ﻿using StudentMSystem.AggregateRoot;
 using StudentMSystem.DTO.Student;
+using StudentMSystem.Handler.Services;
 using StudentMSystem.Repository.StudentRepository;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace StudentMSystem.Handler
 {
     public class UpdateStudentHandler
     {
         private readonly IStudentRepository _studentRepository;
-        public UpdateStudentHandler(IStudentRepository studentRepository)
+        private readonly ValidationService<UpdateStudentDto> _validationService;
+
+        public UpdateStudentHandler(IStudentRepository studentRepository,ValidationService<UpdateStudentDto> validationService)
         {
             _studentRepository = studentRepository;
+            _validationService = validationService;
         }
-        public async Task<StudentResponseDto?> UpdateStudentAsync( int id, UpdateStudentDto updateStudentDto)
+
+        public async Task<StudentResponseDto?> UpdateStudentAsync(int id,UpdateStudentDto updateStudentDto)
         {
-            var existingStudent = await _studentRepository.GetByIdAsync(id);
+            await _validationService.ValidateAsync(updateStudentDto);
+            var existingStudent =  await _studentRepository.GetByIdAsync(id);
             if (existingStudent == null)
             {
                 return null;
             }
+
             var updateStudent = new Student
             {
                 Name = updateStudentDto.Name,
