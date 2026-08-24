@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace StudentMSystem.DTO.Command.Abstractions
+namespace StudentMSystem.Handler.Abstractions
 {
     public interface ICommand
     {

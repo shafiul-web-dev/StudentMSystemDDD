@@ -34,14 +34,11 @@ namespace StudentMSystem.API.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> Register(
-            RegistrationStudentCommand command)
+        public async Task<IActionResult> Register( RegistrationStudentCommand command)
         {
             await _registrationStudentCommandHandler.HandleAsync(command);
-
             return Ok("Student registered successfully.");
         }
-
         [HttpPost("login")]
         public async Task<IActionResult> Login(LoginStudentQuery query)
         {
@@ -60,7 +57,6 @@ namespace StudentMSystem.API.Controllers
                 message = "Login successful."
             });
         }
-
         [HttpGet]
         public async Task<IActionResult> GetAllStudents()
         {

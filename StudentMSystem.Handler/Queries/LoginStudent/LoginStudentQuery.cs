@@ -1,6 +1,8 @@
-﻿namespace StudentMSystem.Handler.Queries.LoginStudent
+﻿using StudentMSystem.Handler.Abstractions;
+
+namespace StudentMSystem.Handler.Queries.LoginStudent
 {
-    public class LoginStudentQuery
+    public class LoginStudentQuery : IQuery
     {
         public string Email { get; set; } = string.Empty;
 

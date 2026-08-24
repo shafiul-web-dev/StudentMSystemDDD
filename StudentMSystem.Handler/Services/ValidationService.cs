@@ -9,7 +9,7 @@ namespace StudentMSystem.Handler.Services
         {
             _validator = validator;
         }
-        public async Task ValidateAsync(T request)
+        public async Task  ValidateAsync(T request)
         {
             var validationResult = await _validator.ValidateAsync(request);
             if (!validationResult.IsValid)
@@ -18,4 +18,4 @@ namespace StudentMSystem.Handler.Services
             }
         }
     }
-}
+} 

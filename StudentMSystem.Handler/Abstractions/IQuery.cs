@@ -6,8 +6,7 @@ using System.Threading.Tasks;
 
 namespace StudentMSystem.Handler.Abstractions
 {
-    public interface ICommandHandler<TCommand> where TCommand : ICommand
+    public interface IQuery
     {
-        Task HandleAsync(TCommand command);
     }
 }
