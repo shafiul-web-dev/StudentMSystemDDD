@@ -2,6 +2,7 @@
 using StudentMSystem.DTO.Student;
 using StudentMSystem.Handler;
 using StudentMSystem.Handler.Commands.RegistrationStudent;
+using StudentMSystem.Handler.Queries.GetAllStudents;
 using StudentMSystem.Handler.Queries.LoginStudent;
 
 namespace StudentMSystem.API.Controllers
@@ -12,7 +13,7 @@ namespace StudentMSystem.API.Controllers
     {
         private readonly RegistrationStudentCommandHandler _registrationStudentCommandHandler;
         private readonly LoginStudentQueryHandler _loginStudentQueryHandler;
-        private readonly GetAllStudentsHandler _getAllStudentsHandler;
+       private readonly GetAllStudentsQueryHandler _getAllStudentsQueryHandler;
         private readonly GetStudentByIdHandler _getStudentByIdHandler;
         private readonly UpdateStudentHandler _updateStudentHandler;
         private readonly DeleteStudentHandler _deleteStudentHandler;
@@ -20,14 +21,14 @@ namespace StudentMSystem.API.Controllers
         public StudentController(
             RegistrationStudentCommandHandler registrationStudentCommandHandler,
             LoginStudentQueryHandler loginStudentQueryHandler,
-            GetAllStudentsHandler getAllStudentsHandler,
+           GetAllStudentsQueryHandler getAllStudentsQueryHandler,
             GetStudentByIdHandler getStudentByIdHandler,
             UpdateStudentHandler updateStudentHandler,
             DeleteStudentHandler deleteStudentHandler)
         {
             _registrationStudentCommandHandler = registrationStudentCommandHandler;
             _loginStudentQueryHandler = loginStudentQueryHandler; ;
-            _getAllStudentsHandler = getAllStudentsHandler;
+            _getAllStudentsQueryHandler = getAllStudentsQueryHandler;
             _getStudentByIdHandler = getStudentByIdHandler;
             _updateStudentHandler = updateStudentHandler;
             _deleteStudentHandler = deleteStudentHandler;
@@ -60,7 +61,8 @@ namespace StudentMSystem.API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllStudents()
         {
-            var response = await _getAllStudentsHandler.GetAllAsync();
+            var query = new GetAllStudentsQuery();
+            var response = await _getAllStudentsQueryHandler.HandleAsync(query);
             return Ok(response);
         }
 
