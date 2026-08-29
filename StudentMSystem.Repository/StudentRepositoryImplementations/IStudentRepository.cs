@@ -1,7 +1,7 @@
 ﻿using StudentMSystem.AggregateRoot;
 using StudentMSystem.Repository.Abstractions;
 
-namespace StudentMSystem.Repository.StudentRepository
+namespace StudentMSystem.Repository.StudentRepositoryImplementations
 {
     public interface IStudentRepository : IGenericRepository<Student>
     {

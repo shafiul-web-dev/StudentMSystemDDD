@@ -1,6 +1,6 @@
 ﻿using StudentMSystem.DTO.Student;
 using StudentMSystem.Handler.Abstractions;
-using StudentMSystem.Repository.StudentRepository;
+using StudentMSystem.Repository.StudentRepositoryImplementations;
 using System;
 using System.Collections.Generic;
 using System.Linq;

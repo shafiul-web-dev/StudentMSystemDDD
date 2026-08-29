@@ -1,5 +1,5 @@
 ﻿using StudentMSystem.Handler.Abstractions;
-using StudentMSystem.Repository.StudentRepository;
+using StudentMSystem.Repository.StudentRepositoryImplementations;
 
 namespace StudentMSystem.Handler.Commands.DeleteStudent
 {

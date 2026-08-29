@@ -1,7 +1,7 @@
 ﻿using StudentMSystem.AggregateRoot;
 using StudentMSystem.Handler.Abstractions;
 using StudentMSystem.Handler.Services;
-using StudentMSystem.Repository.StudentRepository;
+using StudentMSystem.Repository.StudentRepositoryImplementations;
 
 namespace StudentMSystem.Handler.Commands.RegistrationStudent
 {

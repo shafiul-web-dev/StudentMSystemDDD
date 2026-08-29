@@ -4,7 +4,7 @@ using StudentMSystem.Repository.Data;
 using Microsoft.EntityFrameworkCore;
 
 
-namespace StudentMSystem.Repository.StudentRepository
+namespace StudentMSystem.Repository.StudentRepositoryImplementations
 {
     public class StudentRepository : GenericRepository<Student>, IStudentRepository
     {
