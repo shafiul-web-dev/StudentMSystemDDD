@@ -1,10 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using StudentMSystem.DTO.Student;
 using StudentMSystem.Handler;
+using StudentMSystem.Handler.Commands.DeleteStudent;
 using StudentMSystem.Handler.Commands.RegistrationStudent;
 using StudentMSystem.Handler.Queries.GetAllStudents;
 using StudentMSystem.Handler.Queries.GetStudentById;
 using StudentMSystem.Handler.Queries.LoginStudent;
+using StudentMSystem.Handler.Commands.UpdateStudent;
 
 namespace StudentMSystem.API.Controllers
 {
@@ -16,23 +18,23 @@ namespace StudentMSystem.API.Controllers
         private readonly LoginStudentQueryHandler _loginStudentQueryHandler;
         private readonly GetAllStudentsQueryHandler _getAllStudentsQueryHandler;
         private readonly GetStudentByIdQueryHandler _getStudentByIdQueryHandler;
-        private readonly UpdateStudentHandler _updateStudentHandler;
-        private readonly DeleteStudentHandler _deleteStudentHandler;
+        private readonly UpdateStudentCommandHandler _updateStudentCommandHandler;
+        private readonly DeleteStudentCommandHandler _deleteStudentCommandHandler;
 
         public StudentController(
             RegistrationStudentCommandHandler registrationStudentCommandHandler,
             LoginStudentQueryHandler loginStudentQueryHandler,
             GetAllStudentsQueryHandler getAllStudentsQueryHandler,
             GetStudentByIdQueryHandler getStudentByIdQueryHandler,
-            UpdateStudentHandler updateStudentHandler,
-            DeleteStudentHandler deleteStudentHandler)
+            UpdateStudentCommandHandler updateStudentCommandHandler,
+            DeleteStudentCommandHandler deleteStudentCommandHandler)
         {
             _registrationStudentCommandHandler = registrationStudentCommandHandler;
             _loginStudentQueryHandler = loginStudentQueryHandler; ;
             _getAllStudentsQueryHandler = getAllStudentsQueryHandler;
             _getStudentByIdQueryHandler = getStudentByIdQueryHandler;
-            _updateStudentHandler = updateStudentHandler;
-            _deleteStudentHandler = deleteStudentHandler;
+            _updateStudentCommandHandler = updateStudentCommandHandler;
+            _deleteStudentCommandHandler = deleteStudentCommandHandler;
         }
 
         [HttpPost("register")]
@@ -82,30 +84,28 @@ namespace StudentMSystem.API.Controllers
             return Ok(response);
         }
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateStudent( int id, UpdateStudentDto request)
-        {
-            var response = await _updateStudentHandler.UpdateStudentAsync(id, request);
+         public async Task<IActionResult> UpdateStudent(int id, UpdateStudentDto request)
+         {
+            var command = new UpdateStudentCommand
+            {
+                Id = id,
+                Name = request.Name,
+                Email = request.Email,
+                Phone = request.Phone,
+                Department = request.Department
+            };
 
-            if (response == null)
-            {
-                return NotFound(new
-                {
-                    message = "Student not found."
-                });
-            }
-            return Ok(response);
-        }
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteStudent(int id)
+            await _updateStudentCommandHandler.HandleAsync(command);
+            return NoContent();
+         }
+       [HttpDelete("{id}")]
+       public async Task<IActionResult> DeleteStudent(int id)
         {
-            var deleted = await _deleteStudentHandler.DeleteAsync(id);
-            if (!deleted)
+            var command = new DeleteStudentCommand
             {
-                return NotFound(new
-                {
-                    message = "Student not found."
-                });
-            }
+                Id = id
+            };
+            await _deleteStudentCommandHandler.HandleAsync(command);
             return NoContent();
         }
     }
