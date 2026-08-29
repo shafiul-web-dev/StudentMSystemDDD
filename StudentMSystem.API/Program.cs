@@ -4,6 +4,7 @@ using StudentMSystem.API.Middleware;
 using StudentMSystem.Handler;
 using StudentMSystem.Handler.Commands.RegistrationStudent;
 using StudentMSystem.Handler.Queries.GetAllStudents;
+using StudentMSystem.Handler.Queries.GetStudentById;
 using StudentMSystem.Handler.Queries.LoginStudent;
 using StudentMSystem.Handler.Services;
 using StudentMSystem.Handler.Validators;
@@ -27,7 +28,7 @@ builder.Services.AddScoped<IStudentRepository, StudentRepository>();
 builder.Services.AddScoped<RegistrationStudentCommandHandler>();
 builder.Services.AddScoped<LoginStudentQueryHandler>();
 builder.Services.AddScoped<GetAllStudentsQueryHandler>();
-builder.Services.AddScoped<GetStudentByIdHandler>();
+builder.Services.AddScoped<GetStudentByIdQueryHandler>();
 builder.Services.AddScoped<UpdateStudentHandler>();
 builder.Services.AddScoped<DeleteStudentHandler>();
 

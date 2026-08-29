@@ -3,6 +3,7 @@ using StudentMSystem.DTO.Student;
 using StudentMSystem.Handler;
 using StudentMSystem.Handler.Commands.RegistrationStudent;
 using StudentMSystem.Handler.Queries.GetAllStudents;
+using StudentMSystem.Handler.Queries.GetStudentById;
 using StudentMSystem.Handler.Queries.LoginStudent;
 
 namespace StudentMSystem.API.Controllers
@@ -13,23 +14,23 @@ namespace StudentMSystem.API.Controllers
     {
         private readonly RegistrationStudentCommandHandler _registrationStudentCommandHandler;
         private readonly LoginStudentQueryHandler _loginStudentQueryHandler;
-       private readonly GetAllStudentsQueryHandler _getAllStudentsQueryHandler;
-        private readonly GetStudentByIdHandler _getStudentByIdHandler;
+        private readonly GetAllStudentsQueryHandler _getAllStudentsQueryHandler;
+        private readonly GetStudentByIdQueryHandler _getStudentByIdQueryHandler;
         private readonly UpdateStudentHandler _updateStudentHandler;
         private readonly DeleteStudentHandler _deleteStudentHandler;
 
         public StudentController(
             RegistrationStudentCommandHandler registrationStudentCommandHandler,
             LoginStudentQueryHandler loginStudentQueryHandler,
-           GetAllStudentsQueryHandler getAllStudentsQueryHandler,
-            GetStudentByIdHandler getStudentByIdHandler,
+            GetAllStudentsQueryHandler getAllStudentsQueryHandler,
+            GetStudentByIdQueryHandler getStudentByIdQueryHandler,
             UpdateStudentHandler updateStudentHandler,
             DeleteStudentHandler deleteStudentHandler)
         {
             _registrationStudentCommandHandler = registrationStudentCommandHandler;
             _loginStudentQueryHandler = loginStudentQueryHandler; ;
             _getAllStudentsQueryHandler = getAllStudentsQueryHandler;
-            _getStudentByIdHandler = getStudentByIdHandler;
+            _getStudentByIdQueryHandler = getStudentByIdQueryHandler;
             _updateStudentHandler = updateStudentHandler;
             _deleteStudentHandler = deleteStudentHandler;
         }
@@ -52,7 +53,6 @@ namespace StudentMSystem.API.Controllers
                     message = "Invalid email or password."
                 });
             }
-
             return Ok(new
             {
                 message = "Login successful."
@@ -67,15 +67,17 @@ namespace StudentMSystem.API.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetById(int id)
+        public async Task<IActionResult> GetStudentById(int id)
         {
-            var response =  await _getStudentByIdHandler.GetByIdAsync(id);
+            var query = new GetStudentByIdQuery
+            {
+                Id = id
+            };
+            var response = await _getStudentByIdQueryHandler.HandleAsync(query);
+
             if (response == null)
             {
-                return NotFound(new
-                {
-                    message = "Student not found."
-                });
+                return NotFound("Student not found.");
             }
             return Ok(response);
         }
