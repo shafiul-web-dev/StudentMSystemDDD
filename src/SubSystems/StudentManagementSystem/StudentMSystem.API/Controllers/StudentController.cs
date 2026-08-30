@@ -7,6 +7,7 @@ using StudentMSystem.Handler.Queries.GetAllStudents;
 using StudentMSystem.Handler.Queries.GetStudentById;
 using StudentMSystem.Handler.Queries.LoginStudent;
 using StudentMSystem.Handler.Commands.UpdateStudent;
+using EducationManagementSystem.Shared.Dispatcher.Abstractions;
 
 namespace StudentMSystem.API.Controllers
 {
@@ -14,39 +15,24 @@ namespace StudentMSystem.API.Controllers
     [ApiController]
     public class StudentController : ControllerBase
     {
-        private readonly RegistrationStudentCommandHandler _registrationStudentCommandHandler;
-        private readonly LoginStudentQueryHandler _loginStudentQueryHandler;
-        private readonly GetAllStudentsQueryHandler _getAllStudentsQueryHandler;
-        private readonly GetStudentByIdQueryHandler _getStudentByIdQueryHandler;
-        private readonly UpdateStudentCommandHandler _updateStudentCommandHandler;
-        private readonly DeleteStudentCommandHandler _deleteStudentCommandHandler;
+        private readonly IDispatcher _dispatcher;
+     
 
-        public StudentController(
-            RegistrationStudentCommandHandler registrationStudentCommandHandler,
-            LoginStudentQueryHandler loginStudentQueryHandler,
-            GetAllStudentsQueryHandler getAllStudentsQueryHandler,
-            GetStudentByIdQueryHandler getStudentByIdQueryHandler,
-            UpdateStudentCommandHandler updateStudentCommandHandler,
-            DeleteStudentCommandHandler deleteStudentCommandHandler)
+        public StudentController( IDispatcher dispatcher)
         {
-            _registrationStudentCommandHandler = registrationStudentCommandHandler;
-            _loginStudentQueryHandler = loginStudentQueryHandler; ;
-            _getAllStudentsQueryHandler = getAllStudentsQueryHandler;
-            _getStudentByIdQueryHandler = getStudentByIdQueryHandler;
-            _updateStudentCommandHandler = updateStudentCommandHandler;
-            _deleteStudentCommandHandler = deleteStudentCommandHandler;
+            _dispatcher = dispatcher;
         }
 
         [HttpPost("register")]
         public async Task<IActionResult> Register( RegistrationStudentCommand command)
         {
-            await _registrationStudentCommandHandler.HandleAsync(command);
+            await _dispatcher.SendCommand(command);
             return Ok("Student registered successfully.");
         }
         [HttpPost("login")]
         public async Task<IActionResult> Login(LoginStudentQuery query)
         {
-            var response = await _loginStudentQueryHandler.HandleAsync(query);
+            var response = await _dispatcher.SendQuery<LoginStudentQuery, bool>(query);
 
             if (!response)
             {
@@ -64,7 +50,7 @@ namespace StudentMSystem.API.Controllers
         public async Task<IActionResult> GetAllStudents()
         {
             var query = new GetAllStudentsQuery();
-            var response = await _getAllStudentsQueryHandler.HandleAsync(query);
+            var response = await _dispatcher.SendQuery<GetAllStudentsQuery , IEnumerable< StudentResponseDto >>(query);
             return Ok(response);
         }
 
@@ -75,8 +61,7 @@ namespace StudentMSystem.API.Controllers
             {
                 Id = id
             };
-            var response = await _getStudentByIdQueryHandler.HandleAsync(query);
-
+            var response = await _dispatcher.SendQuery<GetStudentByIdQuery, StudentResponseDto?>(query);
             if (response == null)
             {
                 return NotFound("Student not found.");
@@ -95,7 +80,7 @@ namespace StudentMSystem.API.Controllers
                 Department = request.Department
             };
 
-            await _updateStudentCommandHandler.HandleAsync(command);
+            await _dispatcher.SendCommand(command);
             return NoContent();
          }
        [HttpDelete("{id}")]
@@ -105,7 +90,7 @@ namespace StudentMSystem.API.Controllers
             {
                 Id = id
             };
-            await _deleteStudentCommandHandler.HandleAsync(command);
+            await _dispatcher.SendCommand(command);
             return NoContent();
         }
     }
