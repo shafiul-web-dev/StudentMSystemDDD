@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using StudentMSystem.Handler.Abstractions;
+using EducationManagementSystem.Abstractions;
 
 namespace StudentMSystem.Handler.Commands.RegistrationStudent
 {

@@ -1,5 +1,5 @@
 ﻿using StudentMSystem.DTO.Student;
-using StudentMSystem.Handler.Abstractions;
+using EducationManagementSystem.Abstractions;
 using StudentMSystem.Repository.StudentRepositoryImplementations;
 using System;
 using System.Collections.Generic;

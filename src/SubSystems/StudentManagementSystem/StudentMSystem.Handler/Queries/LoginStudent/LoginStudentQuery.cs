@@ -1,4 +1,4 @@
-﻿using StudentMSystem.Handler.Abstractions;
+﻿using EducationManagementSystem.Abstractions;
 
 namespace StudentMSystem.Handler.Queries.LoginStudent
 {

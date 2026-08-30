@@ -1,4 +1,4 @@
-﻿using StudentMSystem.Handler.Abstractions;
+﻿using EducationManagementSystem.Abstractions;
 using StudentMSystem.Handler.Services;
 using StudentMSystem.Repository.StudentRepositoryImplementations;
 

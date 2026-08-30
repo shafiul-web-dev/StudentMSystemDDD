@@ -13,9 +13,14 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\EducationManagementSystem.Shared.Dispatcher\EducationManagementSystem.Shared.Dispatcher.csproj" />
     <ProjectReference Include="..\StudentMSystem.AggregateRoot\StudentMSystem.AggregateRoot.csproj" />
     <ProjectReference Include="..\StudentMSystem.DTO\StudentMSystem.DTO.csproj" />
     <ProjectReference Include="..\StudentMSystem.Repository\StudentMSystem.Repository.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Abstractions\" />
   </ItemGroup>
 
 </Project>

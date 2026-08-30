@@ -1,4 +1,4 @@
-﻿using StudentMSystem.Handler.Abstractions;
+﻿using EducationManagementSystem.Abstractions;
 using StudentMSystem.Repository.StudentRepositoryImplementations;
 
 namespace StudentMSystem.Handler.Commands.UpdateStudent
