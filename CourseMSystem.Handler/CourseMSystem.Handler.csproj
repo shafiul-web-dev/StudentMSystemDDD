@@ -6,4 +6,11 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\CourseMSystem.AggregateRoot\CourseMSystem.AggregateRoot.csproj" />
+    <ProjectReference Include="..\CourseMSystem.DTO\CourseMSystem.DTO.csproj" />
+    <ProjectReference Include="..\CourseMSystem.Repository\CourseMSystem.Repository.csproj" />
+    <ProjectReference Include="..\EducationManagementSystem.Shared.Dispatcher\EducationManagementSystem.Shared.Dispatcher.csproj" />
+  </ItemGroup>
+
 </Project>
