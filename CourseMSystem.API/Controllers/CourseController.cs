@@ -1,5 +1,7 @@
 ﻿using CourseMSystem.DTO;
 using CourseMSystem.Handler.Commands.CreateCourse;
+using CourseMSystem.Handler.Commands.DeleteCourse;
+using CourseMSystem.Handler.Commands.UpdateCourse;
 using CourseMSystem.Handler.Queries.GetAllCourse;
 using CourseMSystem.Handler.Queries.GetCourseById;
 using EducationManagementSystem.Shared.Dispatcher.Abstractions;
@@ -45,6 +47,30 @@ namespace CourseMSystem.API.Controllers
                 return NotFound("Course not found.");
             }
             return Ok(response);
+        }
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateCourse( int id, UpdateCourseDto request)
+        {
+            var command = new UpdateCourseCommand
+            {
+                Id = id,
+                Name = request.Name,
+                Capacity = request.Capacity
+            };
+            await _dispatcher.SendCommand(command);
+            return Ok("Course updated successfully.");
+        }
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteCourse(int id)
+        {
+            var command = new DeleteCourseCommand
+            {
+                Id = id
+            };
+
+            await _dispatcher.SendCommand(command);
+
+            return Ok("Course deleted successfully.");
         }
     }
 }
