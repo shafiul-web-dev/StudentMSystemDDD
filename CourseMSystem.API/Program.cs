@@ -1,4 +1,5 @@
 using CourseMSystem.Handler.Extensions;
+using EducationManagementSystem.Shared.Dispatcher.Abstractions;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -7,6 +8,7 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddScoped<IDispatcher, Dispatcher>();
 builder.Services.AddCourseRepositoryServices(builder.Configuration);
 builder.Services.AddCourseHandlerServices();
 
