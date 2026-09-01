@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using ProfessorMSystem.DTO;
 using ProfessorMSystem.Handler.Commands.CreateProfessor;
 using ProfessorMSystem.Handler.Queries.GetAllProfessor;
+using ProfessorMSystem.Handler.Queries.GetProfessorById;
 
 namespace ProfessorMSystem.API.Controllers
 {
@@ -25,6 +26,7 @@ namespace ProfessorMSystem.API.Controllers
 
             return Ok("Professor Created Successfully");
         }
+
         [HttpGet]
         public async Task<IActionResult> GetAllProfessors()
         {
@@ -32,5 +34,25 @@ namespace ProfessorMSystem.API.Controllers
             var response = await _dispatcher.SendQuery<GetAllProfessorsQuery, IEnumerable<ProfessorResponseDto>>(query);
             return Ok(response);
         }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetProfessorById(int id)
+        {
+            var query = new GetProfessorByIdQuery
+            {
+                Id = id
+            };
+
+            var response = await _dispatcher.SendQuery< GetProfessorByIdQuery, ProfessorResponseDto?>(query);
+
+            if (response == null)
+            {
+                return NotFound("Professor not found");
+            }
+
+            return Ok(response);
+        }
+
+
     }
 }
