@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using ProfessorMSystem.DTO;
 using ProfessorMSystem.Handler.Commands.CreateProfessor;
+using ProfessorMSystem.Handler.Commands.DeleteProfessor;
+using ProfessorMSystem.Handler.Commands.UpdateProfessor;
 using ProfessorMSystem.Handler.Queries.GetAllProfessor;
 using ProfessorMSystem.Handler.Queries.GetProfessorById;
 
@@ -52,7 +54,23 @@ namespace ProfessorMSystem.API.Controllers
 
             return Ok(response);
         }
-
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateProfessor(int id,UpdateProfessorCommand command)
+        {
+            command.Id = id;
+            await _dispatcher.SendCommand(command);
+            return Ok("Professor Updated Successfully");
+        }
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteProfessor(int id)
+        {
+            var command = new DeleteProfessorCommand
+            {
+                Id = id
+            };
+            await _dispatcher.SendCommand(command);
+            return Ok("Professor Deleted Successfully");
+        }
 
     }
 }
