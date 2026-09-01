@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\EducationManagementSystem.Shared.Dispatcher\EducationManagementSystem.Shared.Dispatcher.csproj" />
+    <ProjectReference Include="..\Professor.DTO\ProfessorMSystem.DTO.csproj" />
+    <ProjectReference Include="..\Professor.Repository\ProfessorMSystem.Repository.csproj" />
+    <ProjectReference Include="..\src\SubSystems\StudentManagementSystem\StudentMSystem.AggregateRoot\StudentMSystem.AggregateRoot.csproj" />
+  </ItemGroup>
+
+</Project>
